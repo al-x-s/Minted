@@ -1,0 +1,184 @@
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+/**------------------------------------------------------------------------
+ *                           HOME PAGE
+ *------------------------------------------------------------------------**/
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+a:hover, nav > li:hover {
+   color: #BD6E00;
+}
+
+body {
+    max-width: 1000px;
+    margin: auto;
+    padding: 0 10px;
+}
+
+section {
+    margin: 20px 0;
+}
+
+#login_status {
+    display: flex;
+    justify-content: right;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logo {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    column-gap: 10px;
+}
+
+#logo_title {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 2em;
+}
+
+header > nav {
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav > li {
+    font-size: 1.5em;
+}
+
+#nav_signup {
+    color: #660000;
+    padding: 5px;
+    border: 2px solid #BD6E00;
+    background-color: #F9BC30;
+}
+
+#nav_signup:hover {
+    color: #BD6E00;
+}
+
+#nav_signup, #nav_login, #join_button {
+    cursor: pointer;
+}
+
+.banner {
+    border: solid 2px #979797;
+    background-color: #D8D8D8;
+    padding: 15%;
+}
+
+.banner > * {
+    text-align: center;
+}
+
+.banner_heading {
+    font-size: 3em;
+}
+
+.banner_button {
+    max-width: fit-content;
+    margin: auto;
+    font-size: 2em;
+    padding: 20px;
+    color: #660000;
+    border: 2px solid #BD6E00;
+    background-color: #F9BC30;
+    border-radius: 2px;
+}
+
+.banner_button:hover {
+    cursor: pointer;
+    color: #BD6E00;
+}
+
+#homepage_playlist {
+    display: flex;
+    justify-content: space-evenly;
+    column-gap: 20px;
+}
+
+.playlist {
+    width: 50%;
+}
+
+#homepage_playlist > div {
+    border: 1px solid black;
+}
+
+#homepage_playlist > div > h2 {
+    text-align: center;
+}
+
+#testimonial {
+    width: 100%;
+}
+
+#scwidget {
+    display: block;
+    margin: auto;
+    padding-bottom: 20px;
+}
+
+dialog::backdrop {
+    color: rgba(151, 151, 151)
+}
+
+dialog {
+    width: 40%;
+    height: fit-content;
+}
+
+dialog > * {
+    text-align: center;
+    margin: auto;
+}
+
+dialog > form > button {
+    font-size: 1.5em;
+}
+
+/**------------------------------------------------------------------------
+ *                           Profile Page
+ *------------------------------------------------------------------------**/
+
+ #profile_page {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 1fr 1fr;
+ }
+
+ #profile_details {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+ }
+
+ #upload_form {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+ }
+
+ #track_list {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+ }

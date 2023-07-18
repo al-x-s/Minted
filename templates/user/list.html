@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<button><a href="/">Add New User</a></button>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>EMAIL</th>
+        <th></th>
+        <th></th>
+    </tr>
+    {% for user in users %}
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td><form action="/user/{{ user.id }}/delete" method="POST">
+            <button type="submit">Delete</button>
+        </form></td>
+        <td><form action="/user/{{ user.id }}/edit" method="GET">
+            <button type="submit">Edit</button>
+        </form></td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- {% for user in users %} -->
+
+    <!-- <div class="user">
+        <p>ID = {{ user.id }}</p>
+        <p>NAME = {{ user.username }}</p>
+        <p>EMAIL = {{ user.email }}</p>
+    </div>
+    <div class="buttons">
+        <form action="/user/{{ user.id }}/delete" method="POST">
+            <button type="submit">Delete</button>
+        </form>
+        <form action="/user/{{ user.id }}/edit" method="GET">
+            <button type="submit">Edit</button>
+        </form>
+    </div> -->
+
+<!-- {% endfor %} -->
+
+{% endblock %}

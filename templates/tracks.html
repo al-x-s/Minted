@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<h1>Here's the main song on this page:</h1>
+<section>
+    <button>Like</button><button>Comment</button><button>Download</button><button id="upload_rap">Upload your rap on this song</button>
+    <iframe class="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ sc_id }}&amp;color=BD6E00&show_artwork=true&show_user=false&download=true&sharing=false"></iframe>
+</section>
+
+<h1>...and here are the MC's who have rapped on it:</h1>
+
+
+
+<dialog id="upload_rap_dialog">
+    <h1>Upload your rap</h1>
+    <form action="/upload_rap/{{ session.get('user_id', '') }}/{{ track_id }}" method="POST">
+        <h2>Upload your rap</h2>
+        <p>
+            <label for="name">Track Name:</label>
+            <input name="name" type="text">
+        </p>
+        <p>
+            <label for="sc_embed">Embed Link:</label>
+            <input name="sc_embed" type="text">
+        </p>
+        <button type="submit">Upload</button>
+    </form>
+</dialog>
+        
+<script>
+
+uploadRapButton = document.getElementById("upload_rap")
+uploadRapDialog = document.getElementById("upload_rap_dialog")
+
+uploadRapButton.addEventListener("click", () => {
+    uploadRapDialog.showModal();
+})
+
+/**----------------------
+ *    Close Dialogs
+ *------------------------**/
+
+ const lightDismiss = ({target:dialog}) => {
+    if (dialog.nodeName === 'DIALOG')
+      dialog.close('dismiss')
+}
+document.addEventListener('click', lightDismiss);
+
+</script>
+
+{% endblock %}

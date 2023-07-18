@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minted</title>
+    <script src="/static/base.js" defer></script>
+    <script src="https://w.soundcloud.com/player/api.js" type="text/javascript"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    {% if session.get('user_name', '') == '' %}
+    {% else %}
+    <div id="login_status">
+        <p>You are logged in as {{ session.get('user_name', '') }}</p>
+    </div>
+    {% endif %}
+    <header>
+        <div id="logo">
+            <img src="/static/images/logo.png" width="60px" alt="Minted Logo"></li>
+                <p id="logo_title">Minted</p>
+        </div>
+        <nav>
+            <li><a href="/">Home</a></li>
+            <li><a href="/browse">Browse</a></li>
+            {% if session.get('user_name', '') == '' %}
+            <li id="nav_login">Login</li>
+            <li id="nav_signup">Signup</li>
+            {% else %}
+            <li><a href="/users/profile/{{ session.get('user_id', '') }}">My Profile</a></li>
+            <li><a href="/users/logout">Logout</a></li>
+            {% endif %}
+        </nav>
+    </header>
+    {% block main %}
+
+    <section class="banner">
+        <h1 class="banner_heading">Collaborate, Mint, Earn</h1>
+        <div class="banner_button" id="join_button">Join the Community</div>
+    </section>
+    <section id="homepage_playlist">
+        <div class="playlist">
+            <h2>Trending Collaborations</h2>
+            <iframe id="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/304381119&amp;color=BD6E00&show_artwork=false"></iframe>
+        </div>
+        <div class="playlist">
+            <h2>Trending Beats</h2>
+            <iframe id="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/83378885&amp;color=BD6E00&show_artwork=false"></iframe>
+        </div>
+    </section>
+    <section class="banner">
+        <h1 class="banner_heading">Create digital assets with fractional NFT's</h1>
+        <div class="banner_button">Learn More</div>
+    </section>
+    <section>
+        <img id="testimonial" src="/static/testimonial.jpeg" alt="testimonial 'I built my career on Minted. It gave me access to a community of creators and fans as well as the tools to own and monetize my music'">
+    </section>
+    <section class="banner">
+        <h1 class="banner_heading">See what our producers have been creating</h1>
+        <div class="banner_button"><a href="/browse">Browse Beats</a></div>
+    </section>
+
+    {% endblock%}
+
+<!-------------------------------- Dialogs below ------------------------------>
+
+<dialog id="dialogSignup">
+    <h1>Join the Community</h1>
+    <form id="signup_form" action="/users/create" method="POST">
+        <p>
+            <label for="account_type">Account Type:</label>
+            <input type="radio" id="producer" name="account_type" value="producer">
+            <label for="producer">Producer</label>
+            <input type="radio" id="MC" name="account_type" value="emcee">
+            <label for="MC">MC</label>
+        </p>
+        <p>
+            <label for="username">Username:</label>
+            <input name="username" type="text">
+        </p>
+        <p>
+            <label for="email">Email:</label>
+            <input name="email" type="email">
+        </p>
+        <p>
+            <label for="password">Password:</label>
+            <input name="password" type="password">
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+</dialog>
+
+<dialog id="dialogLogin">
+    <h1>Login to Minted</h1>
+    <form id="login_form" action="/users/login" method="POST">
+        <p>
+            <label for="email">Email:</label>
+            <input name="email" type="email">
+        </p>
+        <p>
+            <label for="password">Password:</label>
+            <input name="password" type="password">
+        </p>
+        <button type="submit">Login</button>
+    </form>
+</dialog>
+
+<dialog id="upload_rap_dialog">
+    <h1>Upload your rap</h1>
+    <form action="/upload_rap/{{ session.get('user_id', '') }}/{{ track_id }}" method="POST">
+        <h2>Upload your rap</h2>
+        <p>
+            <label for="name">Track Name:</label>
+            <input name="name" type="text">
+        </p>
+        <p>
+            <label for="sc_embed">Embed Link:</label>
+            <input name="sc_embed" type="text">
+        </p>
+        <button type="submit">Upload</button>
+    </form>
+</dialog>
+
+</body>
+</html>
