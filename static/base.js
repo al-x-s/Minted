@@ -39,3 +39,10 @@ const lightDismiss = ({target:dialog}) => {
       dialog.close('dismiss')
 }
 document.addEventListener('click', lightDismiss);
+
+/**----------------------
+ *    Cloudinary Attempt
+ *------------------------**/
+
+
+

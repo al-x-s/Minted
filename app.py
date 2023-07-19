@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+import cloudinary, cloudinary.uploader, cloudinary.api
 import os
 import bcrypt
 import psycopg2
@@ -11,6 +12,15 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# cloudinary config
+cloudinary.config(
+    cloud_name="dsd49h8kt",
+    api_key="277449242947138",
+    api_secret="***************************",
+)
+
+config = cloudinary.config(secure=True)
 
 # Assigning variables from .env file
 db_URI = os.getenv("URI")
@@ -151,7 +161,8 @@ def show_profile(id):
 def show_track(track_id):
     track = db.get_or_404(Beats, track_id)
     sc_id = track.sc_id
-    return render_template("/tracks.html", sc_id=sc_id, track_id=track_id)
+    raps = Tracks.query.filter_by(beat_id=track_id)
+    return render_template("/tracks.html", sc_id=sc_id, track_id=track_id, raps=raps)
 
 
 @app.route("/browse")

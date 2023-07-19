@@ -2,38 +2,65 @@
 
 {% block main %}
 <h1>Here's the main song on this page:</h1>
+
+<div id="upload_rap_div" class="hide">
+  <h1>Upload your rap</h1>
+  <form action="/upload_rap/{{ session.get('user_id', '') }}/{{ track_id }}" method="POST">
+      <p>
+          <label for="name">Track Name:</label>
+          <input name="name" type="text">
+      </p>
+      <label for="audio_upload_url">Music Url: </label>
+      <input id="audio_upload_url" name="audio_upload_url" type="text" readonly>
+      <button type="button" id="audio_upload_widget" class="cloudinary-button">Upload files</button>
+      <label for="artwork_upload_url">Artwork Url: </label>
+      <input id="artwork_upload_url" name="artwork_upload_url" type="text" readonly>
+      <button type="button" id="artwork_upload_widget" class="cloudinary-button">Upload files</button>
+      <p>
+          <label for="sc_embed">Embed Link:</label>
+          <input name="sc_embed" type="text">
+      </p>
+      <button type="submit">Submit</button>
+  </form>
+</div>
+
 <section>
     <button>Like</button><button>Comment</button><button>Download</button><button id="upload_rap">Upload your rap on this song</button>
     <iframe class="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ sc_id }}&amp;color=BD6E00&show_artwork=true&show_user=false&download=true&sharing=false"></iframe>
 </section>
 
+
+
 <h1>...and here are the MC's who have rapped on it:</h1>
 
+<div class="playback_module">
+  <img src="https://res.cloudinary.com/dsd49h8kt/image/upload/v1689674830/gr44hwwyqtfsy1hjulge.jpg" alt="music artwork">
+  <div>
+    <h1>TRACK NAME</h1>
+    <h2>Artist Name</h2>
+    <audio controls>
+      <source src="https://res.cloudinary.com/dsd49h8kt/video/upload/v1689676748/mezrxyezxhevomxwzx7m.mp3" type="audio/ogg">
+      Your browser does not support the audio tag.
+    </audio>
+  </div>
+</div>
+
+{% for rap in raps %}
+    <button>Like</button><button>Comment</button><button>Download</button><button><a href="/tracks/{{ rap.id }}">View Track Page</a></button>
+    <iframe class="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ rap.sc_id }}&amp;color=BD6E00&show_artwork=false&show_user=false&download=true&sharing=false"></iframe>
+{% endfor %}
 
 
-<dialog id="upload_rap_dialog">
-    <h1>Upload your rap</h1>
-    <form action="/upload_rap/{{ session.get('user_id', '') }}/{{ track_id }}" method="POST">
-        <h2>Upload your rap</h2>
-        <p>
-            <label for="name">Track Name:</label>
-            <input name="name" type="text">
-        </p>
-        <p>
-            <label for="sc_embed">Embed Link:</label>
-            <input name="sc_embed" type="text">
-        </p>
-        <button type="submit">Upload</button>
-    </form>
-</dialog>
-        
-<script>
+
+
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>          
+<script type="text/javascript">
 
 uploadRapButton = document.getElementById("upload_rap")
-uploadRapDialog = document.getElementById("upload_rap_dialog")
+uploadRapDiv = document.getElementById("upload_rap_div")
 
 uploadRapButton.addEventListener("click", () => {
-    uploadRapDialog.showModal();
+    uploadRapDiv.classList.toggle("hide")
 })
 
 /**----------------------
@@ -45,6 +72,43 @@ uploadRapButton.addEventListener("click", () => {
       dialog.close('dismiss')
 }
 document.addEventListener('click', lightDismiss);
+
+/**----------------------
+ *    Cloudinary Upload Widget
+ *------------------------**/
+
+const audio_upload_url = document.getElementById("audio_upload_url")
+
+var audio_upload_widget = cloudinary.createUploadWidget({
+  cloudName: 'dsd49h8kt', 
+  uploadPreset: 'minted_music'}, (error, result) => { 
+    if (!error && result && result.event === "success") { 
+    //   console.log('Done! Here is the image info: ', result.info)
+      console.log(result.info)
+      audio_upload_url.value = result.info.url; 
+    }
+  }
+)
+
+var artwork_upload_widget = cloudinary.createUploadWidget({
+  cloudName: 'dsd49h8kt', 
+  uploadPreset: 'minted_music',
+  cropping: true}, (error, result) => { 
+    if (!error && result && result.event === "success") { 
+    //   console.log('Done! Here is the image info: ', result.info)
+      console.log(result.info)
+      artwork_upload_url.value = result.info.url; 
+    }
+  }
+)
+
+document.getElementById("audio_upload_widget").addEventListener("click", function(e){
+    audio_upload_widget.open(e);
+  }, false);
+
+  document.getElementById("artwork_upload_widget").addEventListener("click", function(e){
+    artwork_upload_widget.open(e);
+  }, false);
 
 </script>
 

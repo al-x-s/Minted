@@ -182,3 +182,31 @@ dialog > form > button {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
  }
+
+ /**------------------------------------------------------------------------
+ *                           Tracks Page
+ *------------------------------------------------------------------------**/
+
+ .hide {
+    display: none;
+ }
+
+ #audio_upload_widget, #artwork_upload_widget {
+    background-color: #F9BC30;
+    border: solid 2px #BD6E00;
+    color: #660000;
+    padding: 5px;
+ }
+
+ .playback_module {
+    border: solid 1px black;
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    padding: 10px;
+ }
+
+ .playback_module > img {
+    max-width: 200px;
+ }
+

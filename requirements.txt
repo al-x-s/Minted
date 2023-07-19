@@ -3,4 +3,5 @@ Gunicorn
 psycopg2
 Flask-SQLAlchemy
 bcrypt
+cloudinary
 # python-dotenv

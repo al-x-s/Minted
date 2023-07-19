@@ -108,21 +108,5 @@
     </form>
 </dialog>
 
-<dialog id="upload_rap_dialog">
-    <h1>Upload your rap</h1>
-    <form action="/upload_rap/{{ session.get('user_id', '') }}/{{ track_id }}" method="POST">
-        <h2>Upload your rap</h2>
-        <p>
-            <label for="name">Track Name:</label>
-            <input name="name" type="text">
-        </p>
-        <p>
-            <label for="sc_embed">Embed Link:</label>
-            <input name="sc_embed" type="text">
-        </p>
-        <button type="submit">Upload</button>
-    </form>
-</dialog>
-
 </body>
 </html>
