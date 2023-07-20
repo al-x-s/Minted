@@ -13,12 +13,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# cloudinary config
-cloudinary.config(
-    cloud_name="dsd49h8kt",
-    api_key="277449242947138",
-    api_secret="***************************",
-)
 
 config = cloudinary.config(secure=True)
 
