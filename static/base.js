@@ -3,9 +3,7 @@
  *------------------------------------------------------------------------**/
 
 navLogin = document.getElementById("nav_login")
-navSignup = document.getElementById("nav_signup")
 dialogLogin = document.getElementById("dialogLogin")
-dialogSignup = document.getElementById("dialogSignup")
 joinButton = document.getElementById("join_button")
 
 
@@ -19,10 +17,6 @@ joinButton = document.getElementById("join_button")
 
 navLogin.addEventListener("click", () => {
     dialogLogin.showModal();
-})
-
-navSignup.addEventListener("click", () => {
-    dialogSignup.showModal();
 })
 
 joinButton.addEventListener("click", () => {

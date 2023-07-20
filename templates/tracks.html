@@ -1,59 +1,67 @@
 {% extends 'base.html' %}
 
 {% block main %}
-<h1>Here's the main song on this page:</h1>
+<h1><span class="italic">{{page_track.track_name}}</span> by {{ page_track.user.username }}</h1>
 
+
+
+<section>
+  <div class="playback_module">
+    <img src="{{page_track.artwork_url}}" alt="music artwork">
+    <div>
+        
+        <audio controls>
+            <source src="{{page_track.audio_url}}" type="audio/ogg">
+            Your browser does not support the audio tag.
+        </audio>
+        <br>
+        <button>Like</button>
+        <button>Comment</button>
+        <button><a href="{{page_track.audio_url}}" download="{{page_track.track_name}}.mp3">Download</a></button>
+        <button><a href="/users/profile/{{ page_track.user.id }}">View Artist Profile</a></button>
+    </div>
+  </div>
+    
+</section>
+
+<h1>Verses by:</h1>
+
+{% if session.get('account_type', '') == 'MC' %}
+<button id="upload_rap">Upload Your Own Rap</button>
 <div id="upload_rap_div" class="hide">
   <h1>Upload your rap</h1>
   <form action="/upload_rap/{{ session.get('user_id', '') }}/{{ track_id }}" method="POST">
       <p>
-          <label for="name">Track Name:</label>
-          <input name="name" type="text">
+        <label for="audio_url">Music Url: </label>
+        <input id="audio_url" name="audio_url" type="text" readonly>
+        <button type="button" id="audio_upload_widget" class="cloudinary-button">Upload Audio</button>
       </p>
-      <label for="audio_upload_url">Music Url: </label>
-      <input id="audio_upload_url" name="audio_upload_url" type="text" readonly>
-      <button type="button" id="audio_upload_widget" class="cloudinary-button">Upload files</button>
-      <label for="artwork_upload_url">Artwork Url: </label>
-      <input id="artwork_upload_url" name="artwork_upload_url" type="text" readonly>
-      <button type="button" id="artwork_upload_widget" class="cloudinary-button">Upload files</button>
       <p>
-          <label for="sc_embed">Embed Link:</label>
-          <input name="sc_embed" type="text">
+        <button type="submit">Submit</button>
       </p>
-      <button type="submit">Submit</button>
-  </form>
-</div>
-
-<section>
-    <button>Like</button><button>Comment</button><button>Download</button><button id="upload_rap">Upload your rap on this song</button>
-    <iframe class="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ sc_id }}&amp;color=BD6E00&show_artwork=true&show_user=false&download=true&sharing=false"></iframe>
-</section>
-
-
-
-<h1>...and here are the MC's who have rapped on it:</h1>
-
-<div class="playback_module">
-  <img src="https://res.cloudinary.com/dsd49h8kt/image/upload/v1689674830/gr44hwwyqtfsy1hjulge.jpg" alt="music artwork">
-  <div>
-    <h1>TRACK NAME</h1>
-    <h2>Artist Name</h2>
-    <audio controls>
-      <source src="https://res.cloudinary.com/dsd49h8kt/video/upload/v1689676748/mezrxyezxhevomxwzx7m.mp3" type="audio/ogg">
-      Your browser does not support the audio tag.
-    </audio>
+    </form>
   </div>
-</div>
+{% else %}
+{% endif %}
 
 {% for rap in raps %}
-    <button>Like</button><button>Comment</button><button>Download</button><button><a href="/tracks/{{ rap.id }}">View Track Page</a></button>
-    <iframe class="scwidget" width="95%" height="166" scrolling="no" frameborder="no" allow="autoplay"src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/{{ rap.sc_id }}&amp;color=BD6E00&show_artwork=false&show_user=false&download=true&sharing=false"></iframe>
+    <div class="playback_module">
+      <img src="{{rap.user.profile_pic}}" alt="music artwork">
+      <div>
+        <h1>{{rap.user.username}} on <span class="italic">{{ page_track.track_name}}</span></h1>
+          <h1>{{rap.track_name}}</h1>
+          <audio controls>
+              <source src="{{rap.audio_url}}" type="audio/ogg">
+              Your browser does not support the audio tag.
+          </audio>
+          <br>
+          <button>Like</button><button>Comment</button><button><a href="/users/profile/{{ rap.user.id }}">View Artist Profile</a></button>
+      </div>
+    </div>
 {% endfor %}
 
 
 
-
-<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>          
 <script type="text/javascript">
 
 uploadRapButton = document.getElementById("upload_rap")
@@ -62,6 +70,11 @@ uploadRapDiv = document.getElementById("upload_rap_div")
 uploadRapButton.addEventListener("click", () => {
     uploadRapDiv.classList.toggle("hide")
 })
+
+document.getElementById("audio_upload_widget").addEventListener("click", function(){
+    audio_upload_widget.open();
+  }, false);
+
 
 /**----------------------
  *    Close Dialogs
@@ -72,43 +85,6 @@ uploadRapButton.addEventListener("click", () => {
       dialog.close('dismiss')
 }
 document.addEventListener('click', lightDismiss);
-
-/**----------------------
- *    Cloudinary Upload Widget
- *------------------------**/
-
-const audio_upload_url = document.getElementById("audio_upload_url")
-
-var audio_upload_widget = cloudinary.createUploadWidget({
-  cloudName: 'dsd49h8kt', 
-  uploadPreset: 'minted_music'}, (error, result) => { 
-    if (!error && result && result.event === "success") { 
-    //   console.log('Done! Here is the image info: ', result.info)
-      console.log(result.info)
-      audio_upload_url.value = result.info.url; 
-    }
-  }
-)
-
-var artwork_upload_widget = cloudinary.createUploadWidget({
-  cloudName: 'dsd49h8kt', 
-  uploadPreset: 'minted_music',
-  cropping: true}, (error, result) => { 
-    if (!error && result && result.event === "success") { 
-    //   console.log('Done! Here is the image info: ', result.info)
-      console.log(result.info)
-      artwork_upload_url.value = result.info.url; 
-    }
-  }
-)
-
-document.getElementById("audio_upload_widget").addEventListener("click", function(e){
-    audio_upload_widget.open(e);
-  }, false);
-
-  document.getElementById("artwork_upload_widget").addEventListener("click", function(e){
-    artwork_upload_widget.open(e);
-  }, false);
 
 </script>
 

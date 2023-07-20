@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<h1>Join the Community</h1>
+    <form id="signup_form" action="/users/create" method="POST">
+        <p>
+            <label for="account_type">Account Type:</label>
+            <input type="radio" id="producer" name="account_type" value="producer">
+            <label for="producer">Producer</label>
+            <input type="radio" id="MC" name="account_type" value="MC">
+            <label for="MC">MC</label>
+        </p>
+        <p>
+            <label for="username">Username:</label>
+            <input name="username" type="text">
+        </p>
+        <p>
+            <label for="profile_picture">Profile Picture URL: </label>
+            <input id="artwork_url" name="profile_picture" type="text" readonly>
+            <button type="button" id="artwork_upload_widget" class="cloudinary-button">Upload Profile Picture</button>
+          </p>
+        <p>
+            <label for="email">Email:</label>
+            <input name="email" type="email">
+        </p>
+        <p>
+            <label for="password">Password:</label>
+            <input name="password" type="password">
+        </p>
+        <button type="submit">Submit</button>
+    </form>
+
+
+
+   <script>
+    document.getElementById("artwork_upload_widget").addEventListener("click", function(){
+        artwork_upload_widget.open();
+    }, false);
+   </script>
+
+    
+    
+
+
+    {% endblock %}

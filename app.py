@@ -5,7 +5,7 @@ import os
 import bcrypt
 import psycopg2
 
-from models import db, Users, Beats, Tracks
+from models import db, Users, Beats, Raps
 
 # Retrieving data from .env file
 import os
@@ -29,7 +29,6 @@ secret_key = os.getenv("secret_key")
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = db_URI
 app.config["SECRET_KEY"] = secret_key
-# db = SQLAlchemy()
 db.init_app(app)
 
 app.config["SQLALCHEMY_ECHO"] = True
@@ -42,6 +41,11 @@ with app.app_context():
 @app.route("/")
 def base():
     return render_template("base.html")
+
+
+@app.route("/signup")
+def signup():
+    return render_template("signup.html")
 
 
 @app.route("/users")
@@ -62,14 +66,13 @@ def user_create():
 
     user = Users(
         account_type=request.form["account_type"],
+        profile_pic=request.form["profile_picture"],
         username=request.form["username"],
         email=request.form["email"],
         pw_hash=password_hash,
     )
     db.session.add(user)
     db.session.commit()
-    # name = db.session.execute(db.select)
-    # session["user_name"] = name[0]
     return redirect(url_for("base", id=user.id))
 
 
@@ -92,6 +95,7 @@ def login():
             id = user.id
             session["user_name"] = name
             session["user_id"] = id
+            session["account_type"] = user.account_type
             return redirect(url_for("base"))
 
 
@@ -103,14 +107,10 @@ def logout():
 
 @app.route("/upload_beat/<id>", methods=["POST"])
 def upload_beat(id):
-    sc__embed_link = request.form.get("sc_embed")
-    index_start = sc__embed_link.find("tracks/") + 7
-    index_end = sc__embed_link.find("&color")
-    sc_code = sc__embed_link[slice(index_start, index_end)]
-
     beat = Beats(
         track_name=request.form["name"],
-        sc_id=sc_code,
+        audio_url=request.form["audio_url"],
+        artwork_url=request.form["artwork_url"],
         fk_user_id=id,
     )
     db.session.add(beat)
@@ -120,18 +120,12 @@ def upload_beat(id):
 
 @app.route("/upload_rap/<id>/<beat_id>", methods=["POST"])
 def upload_rap(id, beat_id):
-    sc__embed_link = request.form.get("sc_embed")
-    index_start = sc__embed_link.find("tracks/") + 7
-    index_end = sc__embed_link.find("&color")
-    sc_code = sc__embed_link[slice(index_start, index_end)]
-
-    track = Tracks(
-        track_name=request.form["name"],
-        sc_id=sc_code,
+    rap = Raps(
+        audio_url=request.form["audio_url"],
         user_id=id,
         beat_id=beat_id,
     )
-    db.session.add(track)
+    db.session.add(rap)
     db.session.commit()
 
     return redirect(url_for("show_track", track_id=beat_id))
@@ -143,45 +137,45 @@ def show_profile(id):
 
     if user.account_type == "producer":
         beats = Beats.query.filter_by(fk_user_id=id)
-        print(beats)
 
-        user_name = user.username
-        account_type = user.account_type
-        user_id = user.id
         return render_template(
-            "/user/profile.html",
-            account_type=account_type,
-            user_id=user_id,
-            user_name=user_name,
+            "/user/profile_producer.html",
+            user=user,
             beats=beats,
+        )
+    else:
+        raps = Raps.query.filter_by(user_id=id)
+        return render_template(
+            "/user/profile_mc.html",
+            user=user,
+            raps=raps,
         )
 
 
 @app.route("/tracks/<track_id>")
 def show_track(track_id):
-    track = db.get_or_404(Beats, track_id)
-    sc_id = track.sc_id
-    raps = Tracks.query.filter_by(beat_id=track_id)
-    return render_template("/tracks.html", sc_id=sc_id, track_id=track_id, raps=raps)
+    page_track = db.get_or_404(Beats, track_id)
+    raps = Raps.query.filter_by(beat_id=track_id)
+    return render_template(
+        "/tracks.html", page_track=page_track, track_id=track_id, raps=raps
+    )
 
 
 @app.route("/browse")
 def browse():
-    music = db.session.query(Beats).all()
-    print(music)
-    return render_template("/browse.html", music=music)
+    return render_template("/browse.html")
 
 
-# @app.route("/")
-# def index():
-#     # connection = psycopg2.connect(host=os.getenv("PGHOST"), user=os.getenv("PGUSER"), password=os.getenv("PGPASSWORD"), port=os.getenv("PGPORT"), dbname=os.getenv("PGDATABASE"))
-#     # Connection info below is for the RENDER.COM database connection, switch on when pushing to github...but hang on, it's not for SQL Alchemy.... :/
-#     # connection = psycopg2.connect(os.getenv("DATABASE_URL"))
-#     # cursor = connection.cursor()
-#     # cursor.execute("SELECT * FROM users;")
-#     results = cursor.fetchall()
-#     # connection.close()
-#     return f"{results}"
+@app.route("/browse/beats")
+def browse_beats():
+    beats = db.session.query(Beats).all()
+    return render_template("/browse/beats.html", musics=beats)
+
+
+@app.route("/browse/raps")
+def browse_raps():
+    raps = db.session.query(Raps).all()
+    return render_template("/browse/raps.html", musics=raps)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<section id="profile_page">
+    <section id="profile_details">
+        <img id="profile_pic" src="{{ user.profile_pic }}" alt="profile picture">
+        <h1>{{ user.username }}</h1>
+        <h3>{{ user.account_type }}</h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex dolor laudantium hic ab expedita omnis mollitia unde molestiae cumque asperiores ea explicabo alias maiores quas impedit, iusto aperiam totam natus!</p>
+        
+
+    </section>
+
+    {% if session.get('user_id', '') == user.id and user.account_type == 'producer' %}
+
+    <section id="upload_form">
+        <h1>Upload a Beat</h1>
+        <form action="/upload_beat/{{ session.get('user_id', '') }}" method="POST">
+            <p>
+                <label for="name">Track Name:</label>
+                <input name="name" type="text" placeholder="type here...">
+            </p>
+            <button type="button" id="audio_upload_widget" class="cloudinary-button">Add Music</button>
+            <p>
+                <label for="audio_url">Music URL: </label>
+                <input id="audio_url" name="audio_url" type="text" readonly>
+            </p>
+            <button type="button" id="artwork_upload_widget" class="cloudinary-button">Add Artwork</button>
+            <p>
+                <label for="artwork_url">Artwork URL: </label>
+                <input id="artwork_url" name="artwork_url" type="text" readonly>
+            </p>
+            <button type="submit">Submit</button>
+        </form>
+      </div>
+    </section>
+
+    {% else %}
+    {% endif %}
+
+    <section id="track_list">
+        {% for beat in beats %}
+        <div class="playback_module">
+            <img src="{{beat.artwork_url}}" alt="music artwork">
+            <div>
+                <h1>{{beat.track_name}}</h1>
+                <audio controls>
+                    <source src="{{beat.audio_url}}" type="audio/ogg">
+                    Your browser does not support the audio tag.
+                </audio>
+                <br>
+                <button>Like</button><button>Comment</button><button>Download</button><button><a href="/tracks/{{ beat.id }}">View Track Page</a></button>
+            </div>
+          </div>
+        {% endfor %}
+    </section>
+    
+<script>
+
+    document.getElementById("audio_upload_widget").addEventListener("click", function(){
+        audio_upload_widget.open();
+    }, false);
+
+    document.getElementById("artwork_upload_widget").addEventListener("click", function(){
+        artwork_upload_widget.open();
+    }, false);
+
+</script>
+
+{% endblock %}

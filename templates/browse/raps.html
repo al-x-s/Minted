@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<button><a href="/browse/beats">Beats</a></button>
+<button><a href="/browse/raps">Raps</a></button>
+    {% for music in musics %}
+    
+    <div class="playback_module">
+        <img src="{{music.user.profile_pic}}" alt="music artwork">
+        <div>
+            <h1>{{music.user.username}} on <span class="italic">{{ music.beat.track_name}}</span></h1>
+            <audio controls>
+                <source src="{{music.audio_url}}" type="audio/ogg">
+                Your browser does not support the audio tag.
+            </audio>
+            <br>
+            <button>Like</button>
+            <button>Comment</button>
+            <button><a href="/users/profile/{{ music.user.id }}">View Artist Profile</a></button>
+            <button><a href="/tracks/{{ music.beat.id }}">View Beat Page</a></button>
+        </div>
+      </div>
+    {% endfor %}        
+
+{% endblock %}

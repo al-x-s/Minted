@@ -1,0 +1,32 @@
+
+{% extends 'base.html' %}
+
+{% block main %}
+<section id="profile_page">
+    <section id="profile_details">
+        <img id="profile_pic" src="{{ user.profile_pic }}" alt="profile picture">
+        <h1>{{ user.username }}</h1>
+        <h3>{{ user.account_type }}</h3>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ex dolor laudantium hic ab expedita omnis mollitia unde molestiae cumque asperiores ea explicabo alias maiores quas impedit, iusto aperiam totam natus!</p>
+        
+
+    </section>
+
+    <section id="track_list">
+        {% for rap in raps %}
+        <div class="playback_module">
+            <img src="{{rap.beat.artwork_url}}" alt="music artwork">
+            <div>
+                <h1>{{rap.beat.track_name}}</h1>
+                <audio controls>
+                    <source src="{{rap.audio_url}}" type="audio/ogg">
+                    Your browser does not support the audio tag.
+                </audio>
+                <br>
+                <button>Like</button><button>Comment</button>
+            </div>
+          </div>
+        {% endfor %}
+    </section>
+
+{% endblock %}
