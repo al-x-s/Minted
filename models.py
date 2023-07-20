@@ -4,9 +4,10 @@ from datetime import datetime
 
 # Retrieving data from .env file
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+# from dotenv import load_dotenv
+
+# load_dotenv()
 
 # Assigning variables from .env file
 db_URI = os.getenv("URI")
