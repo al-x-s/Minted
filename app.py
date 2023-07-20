@@ -9,9 +9,10 @@ from models import db, Users, Beats, Raps
 
 # Retrieving data from .env file
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
+# from dotenv import load_dotenv
+
+# load_dotenv()
 
 
 config = cloudinary.config(secure=True)
