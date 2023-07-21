@@ -14,12 +14,12 @@
                 Your browser does not support the audio tag.
             </audio>
             <br>
-            <button>Like</button>
+            <button>Likes &#128293 {{ music.likes }}</button>
             <button>Comment</button>
             <button><a href="/users/profile/{{ music.user.id }}">View Artist Profile</a></button>
             <button><a href="/tracks/{{ music.beat.id }}">View Beat Page</a></button>
         </div>
-      </div>
+    </div>
     {% endfor %}        
 
 {% endblock %}

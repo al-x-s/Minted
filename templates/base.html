@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/styles.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body>
     {% if session.get('user_name', '') == '' %}
@@ -45,11 +46,37 @@
     <section id="homepage_playlist">
         <div class="playlist">
             <h2>Trending Collaborations</h2>
-            <!-- !NEED TO ADD A RAP HERE -->
+            <div class="playback_module">
+                <img src="{{top_rap.user.profile_pic}}" alt="music artwork">
+                <div>
+                    <h1>{{top_rap.user.username}} on <span class="italic">{{ top_rap.beat.track_name}}</span></h1>
+                    <audio controls>
+                        <source src="{{top_rap.audio_url}}" type="audio/ogg">
+                        Your browser does not support the audio tag.
+                    </audio>
+                    <br>
+                    <button>Likes &#128293 {{ top_rap.likes }}</button>
+                    <button><a href="/users/profile/{{ top_rap.user.id }}">View Artist Profile</a></button>
+                    <button><a href="/tracks/{{ top_rap.beat.id }}">View Beat Page</a></button>
+                </div>
+            </div>
         </div>
         <div class="playlist">
             <h2>Trending Beats</h2>
-            <!-- !NEED TO ADD A BEAT HERE -->
+            <div class="playback_module">
+                <img src="{{top_beat.artwork_url}}" alt="music artwork">
+                <div>
+                    <h1><span class="italic">{{top_beat.track_name}}</span> by {{top_beat.user.username}}</h1>
+                    <audio controls>
+                        <source src="{{top_beat.audio_url}}" type="audio/ogg">
+                        Your browser does not support the audio tag.
+                    </audio>
+                    <br>
+                    <button>Likes &#128293 {{ top_beat.likes }}</button>
+                    <button><a href="/tracks/{{ top_beat.id }}">View Track Page</a></button>
+                    <button><a href="/users/profile/{{ top_beat.user.id }}">View Artist Profile</a></button>
+                </div>
+              </div>
         </div>
     </section>
     <section class="banner">

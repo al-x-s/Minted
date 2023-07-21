@@ -1,23 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 import cloudinary, cloudinary.uploader, cloudinary.api
-import os
 import bcrypt
 import psycopg2
 
 from models import db, Users, Beats, Raps
 
-# Retrieving data from .env file
 import os
-
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
 
 config = cloudinary.config(secure=True)
 
-# Assigning variables from .env file
 db_URI = os.getenv("URI")
 secret_key = os.getenv("secret_key")
 
@@ -35,7 +27,11 @@ with app.app_context():
 
 @app.route("/")
 def base():
-    return render_template("base.html")
+    top_beat = Beats.query.order_by(Beats.likes.desc()).first()
+    print(top_beat)
+    top_rap = Raps.query.order_by(Raps.likes.desc()).first()
+    print(top_rap)
+    return render_template("base.html", top_beat=top_beat, top_rap=top_rap)
 
 
 @app.route("/signup")
@@ -174,4 +170,4 @@ def browse_raps():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    app.run(debug=False, port=os.getenv("PORT", default=5000))

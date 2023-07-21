@@ -211,8 +211,12 @@ dialog > form > button {
     padding: 10px;
  }
 
+ 
+
  .playback_module > img {
     max-width: 200px;
+    width: 20%;
+    height: 20%;
  }
 
 .italic {
