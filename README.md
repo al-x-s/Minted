@@ -1,6 +1,6 @@
 # What is Minted?
 
-Minted is a collaborative platform for hip hop producers and MC's to meet, collaborate and create original music. At it's heart it's about fostering a community of excellence amongst contributors and encourages this through community feedback, rankings and rewards.
+Minted is a platform for hip hop producers and MC's to meet, collaborate and create original music. At it's heart it's about fostering a community of excellence amongst contributors and encourages this through community feedback, rankings and rewards.
 
 ## How does it work?
 
