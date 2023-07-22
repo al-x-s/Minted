@@ -15,7 +15,7 @@
             Your browser does not support the audio tag.
         </audio>
         <br>
-        <button>Like</button>
+        <button>Likes &#128293 {{ page_track.likes }}</button>
         <button>Comment</button>
         <button><a href="{{page_track.audio_url}}" download="{{page_track.track_name}}.mp3">Download</a></button>
         <button><a href="/users/profile/{{ page_track.user.id }}">View Artist Profile</a></button>
@@ -55,7 +55,8 @@
               Your browser does not support the audio tag.
           </audio>
           <br>
-          <button>Like</button><button>Comment</button><button><a href="/users/profile/{{ rap.user.id }}">View Artist Profile</a></button>
+          <button>Likes &#128293 {{ rap.likes }}</button>
+          <button>Comment</button><button><a href="/users/profile/{{ rap.user.id }}">View Artist Profile</a></button>
       </div>
     </div>
 {% endfor %}
